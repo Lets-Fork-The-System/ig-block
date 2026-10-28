@@ -30,7 +30,7 @@ jobs:
           grep -q "^// @downloadURL *$url\$" ig-blacklist.user.js
 
       - name: "stable : la version a augmenté"
-        if: github.ref == 'refs/heads/stable' && github.event.before != '0000000000000000000000000000000000000000'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/stable' && github.event.before != '0000000000000000000000000000000000000000'
         env:
           BEFORE: ${{ github.event.before }}
         run: |
