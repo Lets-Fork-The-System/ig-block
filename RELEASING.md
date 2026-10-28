@@ -82,6 +82,9 @@ nouvelle version soit visible.
   jour** (ou clic droit sur le script → *Rechercher des mises à jour*) pour
   forcer la vérif sur ta machine.
 - L'onglet **Actions** du repo doit être vert sur la branche `stable`.
+  Le script de release relance lui-même les vérifications sur `stable`. Tu
+  peux aussi les lancer à la main quand tu veux :
+  `gh workflow run check.yml --ref stable`.
 
 ## Oups, j'ai publié une version cassée
 

@@ -41,4 +41,6 @@ read -r -p "Publier v$new pour tout le monde ? [o/N] " ok
 git tag -a "v$new" -m "v$new"
 git push origin main "v$new"
 git push origin main:stable
+# Filet de sécurité : relance la CI sur stable même si le push ne l'a pas déclenchée
+gh workflow run check.yml --ref stable >/dev/null 2>&1 || echo "(CI non relancée : vérifie l'onglet Actions)"
 echo "✅ v$new publiée. Les utilisateurs la recevront à la prochaine vérif de mise à jour."
