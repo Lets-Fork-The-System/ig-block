@@ -1,0 +1,8 @@
+title: ig-block
+description: Bloquer en quelques clics les comptes Instagram de la liste « On bloque l'extrême droite »
+lang: fr
+theme: jekyll-theme-cayman
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true

@@ -1,0 +1,10 @@
+cookie*.txt
+progress*.json
+__pycache__/
+.DS_Store
+# secrets : cookies, sessions, exports réseau (contiennent des cookies)
+*.cookie
+cookies*.json
+*.har
+.env
+.env.*

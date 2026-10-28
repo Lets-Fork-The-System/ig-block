@@ -1,0 +1,40 @@
+name: Vérifications
+
+on:
+  push:
+    branches: [main, stable]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Syntaxe du userscript
+        run: node --check ig-blacklist.user.js
+
+      - name: Syntaxe du CLI
+        run: python3 -m py_compile block.py
+
+      - name: Les URLs de mise à jour pointent vers stable
+        run: |
+          url=https://raw.githubusercontent.com/Lets-Fork-The-System/ig-block/stable/ig-blacklist.user.js
+          grep -q "^// @updateURL *$url\$" ig-blacklist.user.js
+          grep -q "^// @downloadURL *$url\$" ig-blacklist.user.js
+
+      - name: "stable : la version a augmenté"
+        if: github.ref == 'refs/heads/stable' && github.event.before != '0000000000000000000000000000000000000000'
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          v() { sed -n 's#^// @version *\([0-9.]*\).*#\1#p' | head -1; }
+          old=$(git show "$BEFORE":ig-blacklist.user.js | v)
+          new=$(v < ig-blacklist.user.js)
+          echo "avant: $old / après: $new"
+          [ "$new" != "$old" ] && [ "$(printf '%s\n%s\n' "$old" "$new" | sort -V | tail -1)" = "$new" ]
